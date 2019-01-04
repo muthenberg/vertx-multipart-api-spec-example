@@ -1,0 +1,52 @@
+openapi: 3.0.2
+info:
+  title: Cyface Vertx Multipart Upload Example
+  description: This is an example used demonstrate Vertx not being able to generate the router for a multipart request.
+  version: 1.0.0
+
+paths:
+  /upload:
+    post:
+      summary: Upload some files with meta data.
+      operationId: upload
+      requestBody:
+        required: true
+        content:
+          'multipart/form-data':
+            schema:
+              type: object
+              properties:
+                fileToUpload:
+                  type: string
+                  format: binary
+                  example:
+                    summary: An example file
+                    externalValue: 'data.txt'
+                meta1:
+                  type: string
+                  example: a
+                meta2:
+                  type: string
+                  example: b
+                meta3:
+                  type: string
+                  example: c
+                meta4:
+                  type: string
+                  example: d
+              required:
+                - fileToUpload
+                - meta1
+                - meta2
+                - meta3
+                - meta4
+              
+      responses:
+        '201':
+          description: If the file was successfully uploaded.
+        '400':
+          description: Unknown error for example if Web server reports status -1 or the client experienced a synchronisation error.
+        '422':
+          description: The multipart request is erroneous. There for example is not exactly one file or a syntax error.
+        '500':
+          description: Reported on any internal server error, such as the storage layer was not accessible.
